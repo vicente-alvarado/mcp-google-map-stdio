@@ -1,0 +1,58 @@
+{
+  "name": "@vicente-alvarado/mcp-google-map-stdio",
+  "version": "1.0.0",
+  "description": "Google Maps MCP server with stdio transport support for Claude Desktop - location services, geocoding, and navigation",
+  "type": "module",
+  "main": "mcp-stdio-wrapper.js",
+  "bin": {
+    "mcp-google-map-stdio": "mcp-stdio-wrapper.js"
+  },
+  "files": [
+    "mcp-stdio-wrapper.js",
+    "dist/",
+    "README.md",
+    "CONFIGURACION_CLAUDE.md"
+  ],
+  "scripts": {
+    "start": "node mcp-stdio-wrapper.js",
+    "test": "node mcp-stdio-wrapper.js",
+    "install-global": "npm install -g .",
+    "uninstall-global": "npm uninstall -g @vicente-alvarado/mcp-google-map-stdio"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "google",
+    "maps",
+    "api",
+    "llm",
+    "mcp",
+    "stdio",
+    "claude",
+    "desktop",
+    "location",
+    "geocoding",
+    "navigation",
+    "wrapper"
+  ],
+  "author": "vicente-alvarado",
+  "license": "MIT",
+  "homepage": "https://github.com/vicente-alvarado/mcp-google-map-stdio#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/vicente-alvarado/mcp-google-map-stdio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/vicente-alvarado/mcp-google-map-stdio/issues"
+  },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
+  "preferGlobal": true,
+  "os": [
+    "win32",
+    "darwin",
+    "linux"
+  ]
+}
