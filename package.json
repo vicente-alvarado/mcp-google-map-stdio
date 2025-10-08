@@ -12,6 +12,7 @@
     "README.md",
     "CONFIGURACION_CLAUDE.md",
     "INSTALACION.md",
+    "DOCUMENTACION_MCP.md",
     ".env.example"
   ],
   "scripts": {

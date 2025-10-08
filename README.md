@@ -125,11 +125,13 @@ npm install -g @vicente-alvarado/mcp-google-map-stdio
 
 ## 📚 Documentación Completa
 
-Ver `CONFIGURACION_CLAUDE.md` para:
-- Guía paso a paso detallada
-- Ejemplos de configuración
-- Solución de problemas avanzada
-- FAQ completo
+### Para Usuarios:
+- **`CONFIGURACION_CLAUDE.md`**: Guía paso a paso para Claude Desktop
+- **`INSTALACION.md`**: Instrucciones de instalación detalladas
+
+### Para Desarrolladores:
+- **`DOCUMENTACION_MCP.md`**: Documentación técnica del protocolo MCP
+- **`src/`**: Código fuente completo del proyecto
 
 ## 🤝 Contribuir
 
