@@ -21,7 +21,7 @@ export interface ToolConfig {
 
 export interface SessionContext {
   apiKey?: string;
-  transport: StreamableHTTPServerTransport;
+  transport: Transport; //Antes era StreamableHTTPServerTransport
 }
 
 export class BaseMcpServer {
@@ -215,5 +215,31 @@ export class BaseMcpServer {
           });
       });
     });
+  }
+  /**
+ * Start MCP Server in STDIO mode (for Claude or MCP-compatible clients)
+ * (NEW 2025-10-08 by Vicente Alvarado)
+ */
+  async startStdioServer(): Promise<void> {
+    const { StreamTransport } = await import("@modelcontextprotocol/sdk/server/stdio.js");
+
+    Logger.log(`[${this.serverName}] Starting STDIO MCP Server...`);
+
+    const transport = new StreamTransport({
+      input: process.stdin,
+      output: process.stdout,
+    });
+
+    await this.connect(transport);
+
+    Logger.log(`[${this.serverName}] STDIO MCP Server ready and waiting for requests`);
+  }
+
+  /**
+   * Gracefully stop the STDIO server (optional, usually handled by the client)
+   */
+  async stopStdioServer(): Promise<void> {
+    Logger.log(`[${this.serverName}] Stopping STDIO MCP Server...`);
+    process.exit(0);
   }
 }

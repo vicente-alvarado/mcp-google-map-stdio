@@ -5,10 +5,11 @@
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "mcp-google-map-stdio": "dist/mcp-stdio-wrapper.js"
+    "mcp-google-map-stdio": "mcp-stdio-wrapper.js"
   },
   "files": [
-    "dist/",
+    "dist",
+    "dist/**/*.map",
     "README.md",
     "CONFIGURACION_CLAUDE.md",
     "INSTALACION.md",
@@ -17,8 +18,7 @@
   ],
   "scripts": {
     "build": "tsup --dts",
-    "start": "node dist/mcp-stdio-wrapper.js",
-    "test": "node dist/mcp-stdio-wrapper.js",
+    "start": "node mcp-stdio-wrapper.js",
     "dev": "cross-env NODE_ENV=development tsup --watch",
     "prepublishOnly": "npm run build",
     "install-global": "npm install -g .",
@@ -80,9 +80,5 @@
     "typescript": "^5.7.3"
   },
   "preferGlobal": true,
-  "os": [
-    "win32",
-    "darwin",
-    "linux"
-  ]
+  "os": ["win32", "darwin", "linux"]
 }

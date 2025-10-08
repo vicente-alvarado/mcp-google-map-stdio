@@ -146,6 +146,21 @@ if (isRunDirectly || isMainModule) {
     Logger.log("   Or: GOOGLE_MAPS_API_KEY=your_api_key_here");
     Logger.log("");
   }
+
+  // Check for STDIO mode (NEW 2025-10-08 by Vicente Alvarado)
+  if (process.argv.includes("--stdio")) {
+    const { BaseMcpServer } = await import("./core/BaseMcpServer.js");
+
+    Logger.log("🔌 Starting Google Maps MCP Server in STDIO mode...");
+    const server = new BaseMcpServer("google-maps", serverConfigs[0].tools);
+
+    // Iniciar el servidor en modo STDIO
+    await server.startStdioServer();
+
+    Logger.log("✅ MCP Server running in STDIO mode (ready for Claude config)");
+    process.stdin.resume(); // mantiene el proceso activo
+    return;
+  }
   
   startServer(argv.port, argv.apikey).catch((error) => {
     Logger.error("❌ Failed to start server:", error);

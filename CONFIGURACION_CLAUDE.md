@@ -96,7 +96,7 @@ nano ~/Library/Application\ Support/Claude/claude_desktop_config.json
     "google-maps": {
       "command": "node",
       "args": [
-        "D:\\mcp-demo\\mcp-google-map\\mcp-stdio-wrapper.js"
+        "tu_directorio\mcp-stdio-wrapper.js"
       ],
       "env": {
         "GOOGLE_MAPS_API_KEY": "TU_API_KEY_AQUI",
@@ -114,7 +114,7 @@ nano ~/Library/Application\ Support/Claude/claude_desktop_config.json
     "google-maps": {
       "command": "node",
       "args": [
-        "/Users/tu-usuario/mcp-demo/mcp-google-map/mcp-stdio-wrapper.js"
+        "/Users/tu-usuario/tu_carpeta/mcp-stdio-wrapper.js"
       ],
       "env": {
         "GOOGLE_MAPS_API_KEY": "TU_API_KEY_AQUI",
