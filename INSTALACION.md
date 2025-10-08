@@ -4,7 +4,7 @@
 
 ### Paso 1: Instalar el paquete
 ```bash
-npm install -g @cablate/mcp-google-maps-stdio
+npm install -g @vicente-alvarado/mcp-google-map-stdio
 ```
 
 ### Paso 2: Verificar instalación
@@ -29,12 +29,12 @@ export GOOGLE_MAPS_API_KEY=tu_api_key_aqui
 
 ### Paso 1: Instalar en proyecto
 ```bash
-npm install @cablate/mcp-google-maps-stdio
+npm install @vicente-alvarado/mcp-google-map-stdio
 ```
 
 ### Paso 2: Usar con npx
 ```bash
-npx @cablate/mcp-google-maps-stdio
+npx @vicente-alvarado/mcp-google-map-stdio
 ```
 
 ## ⚙️ Configuración para Claude Desktop
@@ -71,7 +71,7 @@ C:\Users\TU_USUARIO\AppData\Roaming\Claude\claude_desktop_config.json
   "mcpServers": {
     "google-maps": {
       "command": "npx",
-      "args": ["@cablate/mcp-google-maps-stdio"],
+      "args": ["@vicente-alvarado/mcp-google-map-stdio"],
       "env": {
         "GOOGLE_MAPS_API_KEY": "tu_api_key_aqui"
       }
@@ -95,31 +95,31 @@ mcp-google-maps-stdio
 ### Probar instalación local:
 ```bash
 # Desde el directorio del proyecto
-npx @cablate/mcp-google-maps-stdio
+npx @vicente-alvarado/mcp-google-map-stdio
 ```
 
 ## 🔄 Actualización
 
 ### Actualizar instalación global:
 ```bash
-npm update -g @cablate/mcp-google-maps-stdio
+npm update -g @vicente-alvarado/mcp-google-map-stdio
 ```
 
 ### Actualizar instalación local:
 ```bash
-npm update @cablate/mcp-google-maps-stdio
+npm update @vicente-alvarado/mcp-google-map-stdio
 ```
 
 ## 🗑️ Desinstalación
 
 ### Desinstalar globalmente:
 ```bash
-npm uninstall -g @cablate/mcp-google-maps-stdio
+npm uninstall -g @vicente-alvarado/mcp-google-map-stdio
 ```
 
 ### Desinstalar localmente:
 ```bash
-npm uninstall @cablate/mcp-google-maps-stdio
+npm uninstall @vicente-alvarado/mcp-google-map-stdio
 ```
 
 ## 🐛 Solución de Problemas
@@ -127,16 +127,16 @@ npm uninstall @cablate/mcp-google-maps-stdio
 ### Error: "Command not found"
 ```bash
 # Verificar instalación global
-npm list -g @cablate/mcp-google-maps-stdio
+npm list -g @vicente-alvarado/mcp-google-map-stdio
 
 # Reinstalar si es necesario
-npm install -g @cablate/mcp-google-maps-stdio
+npm install -g @vicente-alvarado/mcp-google-map-stdio
 ```
 
 ### Error: "Permission denied" (macOS/Linux)
 ```bash
 # Usar sudo para instalación global
-sudo npm install -g @cablate/mcp-google-maps-stdio
+sudo npm install -g @vicente-alvarado/mcp-google-map-stdio
 ```
 
 ### Error: "API Key not set"
@@ -160,10 +160,10 @@ echo %GOOGLE_MAPS_API_KEY% # Windows
 
 ```bash
 # Ver información del paquete
-npm info @cablate/mcp-google-maps-stdio
+npm info @vicente-alvarado/mcp-google-map-stdio
 
 # Ver archivos instalados
-npm list -g @cablate/mcp-google-maps-stdio
+npm list -g @vicente-alvarado/mcp-google-map-stdio
 
 # Verificar configuración de Claude
 cat ~/Library/Application\ Support/Claude/claude_desktop_config.json  # macOS
