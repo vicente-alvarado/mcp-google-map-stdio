@@ -110,8 +110,8 @@ desktop.ini
 *.swo
 *~
 
-# Build outputs
-dist/
+# Build outputs (generados por npm run build)
+# dist/ se incluye en el repositorio para distribución
 build/
 out/
 
