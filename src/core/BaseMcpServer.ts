@@ -15,13 +15,13 @@ const VERSION = "0.0.1";
 export interface ToolConfig {
   name: string;
   description: string;
-  schema: any; // Adjust type as per actual SDK (e.g., ZodSchema)
-  action: (params: any) => Promise<any>; // Adjust type for params and return
+  schema: any;
+  action: (params: any) => Promise<any>;
 }
 
 export interface SessionContext {
   apiKey?: string;
-  transport: Transport; //Antes era StreamableHTTPServerTransport
+  transport: Transport;
 }
 
 export class BaseMcpServer {
@@ -29,6 +29,7 @@ export class BaseMcpServer {
   private sessions: { [sessionId: string]: SessionContext } = {};
   private httpServer: Server | null = null;
   private serverName: string;
+  private isStdioMode: boolean = false; // ✅ NUEVO: Flag para saber el modo
 
   constructor(name: string, tools: ToolConfig[]) {
     this.serverName = name;
@@ -56,20 +57,16 @@ export class BaseMcpServer {
 
   async connect(transport: Transport): Promise<void> {
     await this.server.connect(transport);
-
-    // Ensure stdout is only used for JSON messages
-    const originalStdoutWrite = process.stdout.write.bind(process.stdout);
-    process.stdout.write = (chunk: any, encoding?: any, callback?: any) => {
-      if (typeof chunk === "string" && !chunk.startsWith("{")) {
-        return true; // Silently skip non-JSON messages
-      }
-      return originalStdoutWrite(chunk, encoding, callback);
-    };
-
-    Logger.log(`${this.serverName} connected and ready to process requests`);
+    
+    // ✅ Solo log en modo HTTP o a stderr en modo STDIO
+    if (!this.isStdioMode) {
+      Logger.log(`${this.serverName} connected and ready to process requests`);
+    }
   }
 
   async startHttpServer(port: number): Promise<void> {
+    this.isStdioMode = false; // ✅ Marcar como modo HTTP
+    
     const app = express();
     app.use(express.json());
 
@@ -99,10 +96,6 @@ export class BaseMcpServer {
             this.sessions[sessionId] = context;
             Logger.log(`[${this.serverName}] New session initialized: ${sessionId}`);
           },
-          // DNS rebinding protection is disabled by default for backwards compatibility
-          // For production use, enable this:
-          // enableDnsRebindingProtection: true,
-          // allowedHosts: ['127.0.0.1'],
         });
 
         // Create session context
@@ -182,7 +175,6 @@ export class BaseMcpServer {
 
   async stopHttpServer(): Promise<void> {
     if (!this.httpServer) {
-      // Changed to Logger.warn and return, as throwing an error might be too harsh if called multiple times.
       Logger.error(`[${this.serverName}] HTTP server is not running or already stopped.`);
       return;
     }
@@ -197,7 +189,6 @@ export class BaseMcpServer {
         Logger.log(`[${this.serverName}] HTTP server stopped.`);
         this.httpServer = null;
         const closingSessions = Object.values(this.sessions).map((context) => {
-          // Clean up session
           if (context.transport.sessionId) {
             delete this.sessions[context.transport.sessionId];
           }
@@ -209,37 +200,39 @@ export class BaseMcpServer {
             resolve();
           })
           .catch((transportCloseErr) => {
-            // This catch might be redundant if individual transport close errors are handled
             Logger.error(`[${this.serverName}] Error during bulk transport closing:`, transportCloseErr);
             reject(transportCloseErr);
           });
       });
     });
   }
+
   /**
- * Start MCP Server in STDIO mode (for Claude or MCP-compatible clients)
- * (NEW 2025-10-08 by Vicente Alvarado)
- */
+   * ✅ Start MCP Server in STDIO mode (for Claude Desktop)
+   * STDIO mode requires:
+   * - stdin for input (JSON-RPC requests)
+   * - stdout for output (JSON-RPC responses ONLY)
+   * - stderr for logs
+   */
   async startStdioServer(): Promise<void> {
-    const { StreamTransport } = await import("@modelcontextprotocol/sdk/server/stdio.js");
+    this.isStdioMode = true; // ✅ Marcar como modo STDIO
+    
+    const { StdioServerTransport } = await import("@modelcontextprotocol/sdk/server/stdio.js");
 
-    Logger.log(`[${this.serverName}] Starting STDIO MCP Server...`);
+    // ✅ Logs a stderr en modo STDIO
+    console.error(`[${this.serverName}] Starting STDIO MCP Server...`);
 
-    const transport = new StreamTransport({
-      input: process.stdin,
-      output: process.stdout,
-    });
-
+    const transport = new StdioServerTransport();
     await this.connect(transport);
 
-    Logger.log(`[${this.serverName}] STDIO MCP Server ready and waiting for requests`);
+    console.error(`[${this.serverName}] STDIO MCP Server ready and waiting for requests`);
   }
 
   /**
-   * Gracefully stop the STDIO server (optional, usually handled by the client)
+   * Gracefully stop the STDIO server
    */
   async stopStdioServer(): Promise<void> {
-    Logger.log(`[${this.serverName}] Stopping STDIO MCP Server...`);
+    console.error(`[${this.serverName}] Stopping STDIO MCP Server...`);
     process.exit(0);
   }
 }

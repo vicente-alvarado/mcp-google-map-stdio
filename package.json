@@ -1,11 +1,11 @@
 {
   "name": "@vicente-alvarado/mcp-google-map-stdio",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Google Maps MCP server with stdio transport support for Claude Desktop - location services, geocoding, and navigation",
   "type": "module",
   "main": "dist/index.js",
   "bin": {
-    "mcp-google-map-stdio": "mcp-stdio-wrapper.js"
+    "mcp-google-map-stdio": "dist/cli.js"
   },
   "files": [
     "dist",
@@ -18,7 +18,8 @@
   ],
   "scripts": {
     "build": "tsup --dts",
-    "start": "node mcp-stdio-wrapper.js",
+    "start": "node dist/cli.js",
+    "start:stdio": "node dist/cli.js --stdio",
     "dev": "cross-env NODE_ENV=development tsup --watch",
     "prepublishOnly": "npm run build",
     "install-global": "npm install -g .",
@@ -38,8 +39,7 @@
     "desktop",
     "location",
     "geocoding",
-    "navigation",
-    "wrapper"
+    "navigation"
   ],
   "author": "vicente-alvarado",
   "license": "MIT",
