@@ -11,7 +11,9 @@
     "mcp-stdio-wrapper.js",
     "dist/",
     "README.md",
-    "CONFIGURACION_CLAUDE.md"
+    "CONFIGURACION_CLAUDE.md",
+    "INSTALACION.md",
+    ".env.example"
   ],
   "scripts": {
     "start": "node mcp-stdio-wrapper.js",

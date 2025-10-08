@@ -20,12 +20,23 @@ npm install @vicente-alvarado/mcp-google-map-stdio
 ## ⚡ Uso Rápido
 
 ### 1. Configurar API Key
+
+**Opción A: Variables de entorno**
 ```bash
 # Windows
 set GOOGLE_MAPS_API_KEY=tu_api_key_aqui
 
 # macOS/Linux
 export GOOGLE_MAPS_API_KEY=tu_api_key_aqui
+```
+
+**Opción B: Archivo .env (recomendado para desarrollo)**
+```bash
+# Copiar archivo de ejemplo
+cp .env.example .env
+
+# Editar .env con tu API key real
+# GOOGLE_MAPS_API_KEY=tu_api_key_real_aqui
 ```
 
 ### 2. Configurar Claude Desktop
