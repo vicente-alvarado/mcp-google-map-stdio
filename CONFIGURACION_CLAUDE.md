@@ -99,7 +99,7 @@ nano ~/Library/Application\ Support/Claude/claude_desktop_config.json
         "D:\\mcp-demo\\mcp-google-map\\mcp-stdio-wrapper.js"
       ],
       "env": {
-        "GOOGLE_MAPS_API_KEY": "AIzaSyB21g3Ua8r4SZrmbajmdwfCndWxJZVGMxk",
+        "GOOGLE_MAPS_API_KEY": "TU_API_KEY_AQUI",
         "MCP_SERVER_PORT": "3000"
       }
     }
