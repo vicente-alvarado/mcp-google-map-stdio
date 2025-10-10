@@ -216,4 +216,62 @@ export class PlacesSearcher {
       };
     }
   }
+
+  async getWeather(location: { latitude: number; longitude: number }, units: "metric" | "imperial" = "metric"): Promise<{ success: boolean; error?: string; data?: any }> {
+    try {
+      const result = await this.mapsTools.getWeather(location, units);
+
+      return {
+        success: true,
+        data: result,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "An error occurred while getting weather data",
+      };
+    }
+  }
+
+  async getStaticMap(params: {
+    center: { latitude: number; longitude: number };
+    zoom: number;
+    size: { width: number; height: number };
+    mapType?: "roadmap" | "satellite" | "terrain" | "hybrid";
+    markers?: Array<{ latitude: number; longitude: number; label?: string; color?: string }>;
+    path?: Array<{ latitude: number; longitude: number }>;
+  }): Promise<{ success: boolean; error?: string; data?: { url: string } }> {
+    try {
+      const result = await this.mapsTools.getStaticMap(params);
+
+      return {
+        success: true,
+        data: result,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "An error occurred while generating static map",
+      };
+    }
+  }
+
+  async snapToRoads(
+    path: Array<{ latitude: number; longitude: number }>,
+    interpolate: boolean = false
+  ): Promise<{ success: boolean; error?: string; data?: Array<{ latitude: number; longitude: number; placeId?: string; originalIndex?: number }> }> {
+    try {
+      const result = await this.mapsTools.snapToRoads(path, interpolate);
+
+      return {
+        success: true,
+        data: result,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : "An error occurred while snapping to roads",
+      };
+    }
+  }
 }

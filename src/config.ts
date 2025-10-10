@@ -8,6 +8,9 @@ import { ReverseGeocode, ReverseGeocodeParams } from "./tools/maps/reverseGeocod
 import { DistanceMatrix, DistanceMatrixParams } from "./tools/maps/distanceMatrix.js";
 import { Directions, DirectionsParams } from "./tools/maps/directions.js";
 import { Elevation, ElevationParams } from "./tools/maps/elevation.js";
+import { Weather, WeatherParams } from "./tools/maps/weather.js";
+import { StaticMap, StaticMapParams } from "./tools/maps/staticMap.js";
+import { SnapToRoads, SnapToRoadsParams } from "./tools/maps/snapToRoads.js";
 interface ServerInstanceConfig {
   // Renamed from ServerConfig and modified
   name: string;
@@ -61,6 +64,24 @@ const serverConfigs: ServerInstanceConfig[] = [
         description: Elevation.DESCRIPTION,
         schema: Elevation.SCHEMA,
         action: (params: ElevationParams) => Elevation.ACTION(params),
+      },
+      {
+        name: Weather.NAME,
+        description: Weather.DESCRIPTION,
+        schema: Weather.SCHEMA,
+        action: (params: WeatherParams) => Weather.ACTION(params),
+      },
+      {
+        name: StaticMap.NAME,
+        description: StaticMap.DESCRIPTION,
+        schema: StaticMap.SCHEMA,
+        action: (params: StaticMapParams) => StaticMap.ACTION(params),
+      },
+      {
+        name: SnapToRoads.NAME,
+        description: SnapToRoads.DESCRIPTION,
+        schema: SnapToRoads.SCHEMA,
+        action: (params: SnapToRoadsParams) => SnapToRoads.ACTION(params),
       },
     ],
   },

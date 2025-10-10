@@ -27,7 +27,7 @@ export async function startServer(port?: number, apiKey?: string): Promise<void>
   }
 
   Logger.log("🚀 Starting Google Maps MCP Server...");
-  Logger.log("📍 Available tools: search_nearby, get_place_details, maps_geocode, maps_reverse_geocode, maps_distance_matrix, maps_directions, maps_elevation, echo");
+  Logger.log("📍 Available tools: search_nearby, get_place_details, maps_geocode, maps_reverse_geocode, maps_distance_matrix, maps_directions, maps_elevation, maps_weather, maps_static_map, maps_snap_to_roads");
   Logger.log("");
 
   const startPromises = serverConfigs.map(async (config) => {
