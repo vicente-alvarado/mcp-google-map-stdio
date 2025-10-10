@@ -395,4 +395,116 @@ export class GoogleMapsTools {
       throw new Error(`Failed to get elevation data for ${locations.length} location(s): ${extractErrorMessage(error)}`);
     }
   }
+
+  async getWeather(
+    location: { latitude: number; longitude: number },
+    units: "metric" | "imperial" = "metric"
+  ): Promise<any> {
+    try {
+      // Google Weather API endpoint
+      const baseUrl = "https://weather.googleapis.com/v1/currentConditions:lookup";
+
+      // Convert units parameter to Google's format
+      const unitsSystem = units === "imperial" ? "IMPERIAL" : "METRIC";
+
+      // Build request URL
+      const url = `${baseUrl}?key=${this.apiKey}&location.latitude=${location.latitude}&location.longitude=${location.longitude}&unitsSystem=${unitsSystem}`;
+
+      Logger.info(`Fetching weather for coordinates: (${location.latitude}, ${location.longitude})`);
+
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(`Weather API error: ${data.error?.message || response.statusText}`);
+      }
+
+      // Extract relevant weather information
+      const weatherInfo = {
+        temperature: data.temperature?.value || null,
+        conditions: data.condition?.description || "Unknown",
+        humidity: data.relativeHumidity?.value || null,
+        wind_speed: data.wind?.speed?.value || null,
+        wind_direction: data.wind?.direction?.degrees || null,
+        precipitation: data.precipitationProbability?.value || null,
+        uv_index: data.uvIndex?.value || null,
+        visibility: data.visibility?.value || null,
+        pressure: data.pressure?.value || null,
+        cloud_cover: data.cloudCover?.value || null,
+        dew_point: data.dewPoint?.value || null,
+        raw_data: data // Keep full response for advanced use
+      };
+
+      Logger.info(`Weather fetched successfully: ${weatherInfo.temperature}°, ${weatherInfo.conditions}`);
+
+      return weatherInfo;
+    } catch (error: any) {
+      Logger.error("Error in getWeather:", error);
+      throw new Error(`Failed to get weather data: ${extractErrorMessage(error)}`);
+    }
+  }
+
+  async getStaticMap(params: {
+    center: { latitude: number; longitude: number };
+    zoom: number;
+    size: { width: number; height: number };
+    mapType?: "roadmap" | "satellite" | "terrain" | "hybrid";
+    markers?: Array<{ latitude: number; longitude: number; label?: string; color?: string }>;
+    path?: Array<{ latitude: number; longitude: number }>;
+  }): Promise<{ url: string }> {
+    try {
+      const baseUrl = "https://maps.googleapis.com/maps/api/staticmap";
+      const center = `${params.center.latitude},${params.center.longitude}`;
+      const size = `${params.size.width}x${params.size.height}`;
+      const maptype = params.mapType || "roadmap";
+
+      let url = `${baseUrl}?center=${center}&zoom=${params.zoom}&size=${size}&maptype=${maptype}&key=${this.apiKey}`;
+
+      // Add markers
+      if (params.markers && params.markers.length > 0) {
+        params.markers.forEach((marker) => {
+          const markerStr = `color:${marker.color || "red"}|label:${marker.label || ""}|${marker.latitude},${marker.longitude}`;
+          url += `&markers=${encodeURIComponent(markerStr)}`;
+        });
+      }
+
+      // Add path
+      if (params.path && params.path.length > 0) {
+        const pathPoints = params.path.map((p) => `${p.latitude},${p.longitude}`).join("|");
+        url += `&path=color:0x0000ff|weight:5|${pathPoints}`;
+      }
+
+      return { url };
+    } catch (error: any) {
+      Logger.error("Error in getStaticMap:", error);
+      throw new Error(`Failed to generate static map: ${extractErrorMessage(error)}`);
+    }
+  }
+
+  async snapToRoads(
+    path: Array<{ latitude: number; longitude: number }>,
+    interpolate: boolean = false
+  ): Promise<Array<{ latitude: number; longitude: number; placeId?: string; originalIndex?: number }>> {
+    try {
+      const pathString = path.map((p) => `${p.latitude},${p.longitude}`).join("|");
+      const url = `https://roads.googleapis.com/v1/snapToRoads?path=${pathString}&interpolate=${interpolate}&key=${this.apiKey}`;
+
+      const response = await fetch(url);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(`Roads API error: ${data.error?.message || response.statusText}`);
+      }
+
+      return data.snappedPoints.map((point: any) => ({
+        latitude: point.location.latitude,
+        longitude: point.location.longitude,
+        placeId: point.placeId,
+        originalIndex: point.originalIndex,
+      }));
+    } catch (error: any) {
+      Logger.error("Error in snapToRoads:", error);
+      throw new Error(`Failed to snap to roads: ${extractErrorMessage(error)}`);
+    }
+  }
 }
